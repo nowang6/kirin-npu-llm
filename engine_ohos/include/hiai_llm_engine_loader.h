@@ -1,0 +1,118 @@
+/*
+ * HIAI LLM Engine Loader - Embedded shared library loader
+ * This file provides function pointer declarations and macros for dynamically
+ * loading libhiai_llm_engine.so from embedded binary data.
+ */
+
+#ifndef HIAI_LLM_ENGINE_LOADER_H
+#define HIAI_LLM_ENGINE_LOADER_H
+
+#include "llm_engine_context_base.h"
+#include "llm_engine_executor_base.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// Function pointer types matching LLMEngine API
+typedef LLMEngine_Context* (*LLMEngine_Context_CreateFromContextJson_t)(const char*);
+typedef void (*LLMEngine_Context_Destroy_t)(LLMEngine_Context**);
+typedef LLMEngine_Status (*LLMEngine_Context_GetTotalTimeMs_t)(const LLMEngine_Context*, double*);
+typedef LLMEngine_Status (*LLMEngine_Context_GetPrefillTimeMs_t)(const LLMEngine_Context*, double*);
+typedef LLMEngine_Status (*LLMEngine_Context_GetDecodeTimeMs_t)(const LLMEngine_Context*, double*);
+typedef LLMEngine_Status (*LLMEngine_Context_GetInputTokenCount_t)(const LLMEngine_Context*, uint64_t*);
+typedef LLMEngine_Status (*LLMEngine_Context_GetOutputTokenCount_t)(const LLMEngine_Context*, uint64_t*);
+typedef LLMEngine_Status (*LLMEngine_Context_GetDecodeNum_t)(const LLMEngine_Context*, uint64_t*);
+typedef LLMEngine_Status (*LLMEngine_Context_GetGenerateStatus_t)(const LLMEngine_Context*);
+typedef LLMEngine_Status (*LLMEngine_Context_SetOnSomeTokenGenerateDoneFunc_t)(LLMEngine_Context*, void(*)(const LLMEngine_Context*));
+typedef LLMEngine_Status (*LLMEngine_Context_SetOnAllTokensGenerateDoneFunc_t)(LLMEngine_Context*, void(*)(const LLMEngine_Context*));
+typedef LLMEngine_Status (*LLMEngine_Context_SetOnGenerateAsyncFailed_t)(LLMEngine_Context*, void(*)(const LLMEngine_Context*));
+typedef LLMEngine_Status (*LLMEngine_Context_GetOneGenerationLen_t)(const LLMEngine_Context*, uint32_t*);
+typedef LLMEngine_Status (*LLMEngine_Context_GetOneGeneration_t)(const LLMEngine_Context*, char*, uint32_t);
+typedef LLMEngine_Status (*LLMEngine_Context_GetAllGenerationLen_t)(const LLMEngine_Context*, uint32_t*);
+typedef LLMEngine_Status (*LLMEngine_Context_GetAllGeneration_t)(const LLMEngine_Context*, char*, uint32_t);
+typedef LLMEngine_Status (*LLMEngine_Context_GetAllTokenGenerationLen_t)(const LLMEngine_Context*, uint32_t*);
+typedef LLMEngine_Status (*LLMEngine_Context_GetAllTokenGeneration_t)(const LLMEngine_Context*, int32_t*, uint32_t);
+typedef LLMEngine_Status (*LLMEngine_Context_GetOneTokenGeneration_t)(const LLMEngine_Context*, int32_t*);
+
+typedef LLMEngine_Executor* (*LLMEngine_Executor_CreateFromJson_t)(const char*);
+typedef LLMEngine_Prompt* (*LLMEngine_Prompt_Create_t)(void);
+typedef void (*LLMEngine_Prompt_Destroy_t)(LLMEngine_Prompt**);
+typedef LLMEngine_Status (*LLMEngine_Executor_LLM_Generate_t)(LLMEngine_Executor*, LLMEngine_Context*, LLMEngine_Prompt*);
+typedef LLMEngine_Status (*LLMEngine_Executor_LLM_GenerateAsync_t)(LLMEngine_Executor*, LLMEngine_Context*, LLMEngine_Prompt*);
+typedef LLMEngine_Status (*LLMEngine_Prompt_SetText_t)(LLMEngine_Prompt*, const char*);
+typedef LLMEngine_Status (*LLMEngine_Prompt_SetTokenIds_t)(LLMEngine_Prompt*, uint32_t*, uint32_t);
+typedef LLMEngine_Status (*LLMEngine_Executor_Deinit_t)(LLMEngine_Executor*);
+typedef void (*LLMEngine_Executor_Destroy_t)(LLMEngine_Executor**);
+
+// Global function pointer variables
+extern LLMEngine_Context_CreateFromContextJson_t LLMEngine_Context_CreateFromContextJson_ptr;
+extern LLMEngine_Context_Destroy_t LLMEngine_Context_Destroy_ptr;
+extern LLMEngine_Context_GetTotalTimeMs_t LLMEngine_Context_GetTotalTimeMs_ptr;
+extern LLMEngine_Context_GetPrefillTimeMs_t LLMEngine_Context_GetPrefillTimeMs_ptr;
+extern LLMEngine_Context_GetDecodeTimeMs_t LLMEngine_Context_GetDecodeTimeMs_ptr;
+extern LLMEngine_Context_GetInputTokenCount_t LLMEngine_Context_GetInputTokenCount_ptr;
+extern LLMEngine_Context_GetOutputTokenCount_t LLMEngine_Context_GetOutputTokenCount_ptr;
+extern LLMEngine_Context_GetDecodeNum_t LLMEngine_Context_GetDecodeNum_ptr;
+extern LLMEngine_Context_GetGenerateStatus_t LLMEngine_Context_GetGenerateStatus_ptr;
+extern LLMEngine_Context_SetOnSomeTokenGenerateDoneFunc_t LLMEngine_Context_SetOnSomeTokenGenerateDoneFunc_ptr;
+extern LLMEngine_Context_SetOnAllTokensGenerateDoneFunc_t LLMEngine_Context_SetOnAllTokensGenerateDoneFunc_ptr;
+extern LLMEngine_Context_SetOnGenerateAsyncFailed_t LLMEngine_Context_SetOnGenerateAsyncFailed_ptr;
+extern LLMEngine_Context_GetOneGenerationLen_t LLMEngine_Context_GetOneGenerationLen_ptr;
+extern LLMEngine_Context_GetOneGeneration_t LLMEngine_Context_GetOneGeneration_ptr;
+extern LLMEngine_Context_GetAllGenerationLen_t LLMEngine_Context_GetAllGenerationLen_ptr;
+extern LLMEngine_Context_GetAllGeneration_t LLMEngine_Context_GetAllGeneration_ptr;
+extern LLMEngine_Context_GetAllTokenGenerationLen_t LLMEngine_Context_GetAllTokenGenerationLen_ptr;
+extern LLMEngine_Context_GetAllTokenGeneration_t LLMEngine_Context_GetAllTokenGeneration_ptr;
+extern LLMEngine_Context_GetOneTokenGeneration_t LLMEngine_Context_GetOneTokenGeneration_ptr;
+
+extern LLMEngine_Executor_CreateFromJson_t LLMEngine_Executor_CreateFromJson_ptr;
+extern LLMEngine_Prompt_Create_t LLMEngine_Prompt_Create_ptr;
+extern LLMEngine_Prompt_Destroy_t LLMEngine_Prompt_Destroy_ptr;
+extern LLMEngine_Executor_LLM_Generate_t LLMEngine_Executor_LLM_Generate_ptr;
+extern LLMEngine_Executor_LLM_GenerateAsync_t LLMEngine_Executor_LLM_GenerateAsync_ptr;
+extern LLMEngine_Prompt_SetText_t LLMEngine_Prompt_SetText_ptr;
+extern LLMEngine_Prompt_SetTokenIds_t LLMEngine_Prompt_SetTokenIds_ptr;
+extern LLMEngine_Executor_Deinit_t LLMEngine_Executor_Deinit_ptr;
+extern LLMEngine_Executor_Destroy_t LLMEngine_Executor_Destroy_ptr;
+
+// Initialization and cleanup functions
+int hiai_llm_engine_init(void);
+void hiai_llm_engine_cleanup(void);
+
+// Macro redirection - keeps existing code unchanged
+#define LLMEngine_Context_CreateFromContextJson LLMEngine_Context_CreateFromContextJson_ptr
+#define LLMEngine_Context_Destroy LLMEngine_Context_Destroy_ptr
+#define LLMEngine_Context_GetTotalTimeMs LLMEngine_Context_GetTotalTimeMs_ptr
+#define LLMEngine_Context_GetPrefillTimeMs LLMEngine_Context_GetPrefillTimeMs_ptr
+#define LLMEngine_Context_GetDecodeTimeMs LLMEngine_Context_GetDecodeTimeMs_ptr
+#define LLMEngine_Context_GetInputTokenCount LLMEngine_Context_GetInputTokenCount_ptr
+#define LLMEngine_Context_GetOutputTokenCount LLMEngine_Context_GetOutputTokenCount_ptr
+#define LLMEngine_Context_GetDecodeNum LLMEngine_Context_GetDecodeNum_ptr
+#define LLMEngine_Context_GetGenerateStatus LLMEngine_Context_GetGenerateStatus_ptr
+#define LLMEngine_Context_SetOnSomeTokenGenerateDoneFunc LLMEngine_Context_SetOnSomeTokenGenerateDoneFunc_ptr
+#define LLMEngine_Context_SetOnAllTokensGenerateDoneFunc LLMEngine_Context_SetOnAllTokensGenerateDoneFunc_ptr
+#define LLMEngine_Context_SetOnGenerateAsyncFailed LLMEngine_Context_SetOnGenerateAsyncFailed_ptr
+#define LLMEngine_Context_GetOneGenerationLen LLMEngine_Context_GetOneGenerationLen_ptr
+#define LLMEngine_Context_GetOneGeneration LLMEngine_Context_GetOneGeneration_ptr
+#define LLMEngine_Context_GetAllGenerationLen LLMEngine_Context_GetAllGenerationLen_ptr
+#define LLMEngine_Context_GetAllGeneration LLMEngine_Context_GetAllGeneration_ptr
+#define LLMEngine_Context_GetAllTokenGenerationLen LLMEngine_Context_GetAllTokenGenerationLen_ptr
+#define LLMEngine_Context_GetAllTokenGeneration LLMEngine_Context_GetAllTokenGeneration_ptr
+#define LLMEngine_Context_GetOneTokenGeneration LLMEngine_Context_GetOneTokenGeneration_ptr
+
+#define LLMEngine_Executor_CreateFromJson LLMEngine_Executor_CreateFromJson_ptr
+#define LLMEngine_Prompt_Create LLMEngine_Prompt_Create_ptr
+#define LLMEngine_Prompt_Destroy LLMEngine_Prompt_Destroy_ptr
+#define LLMEngine_Executor_LLM_Generate LLMEngine_Executor_LLM_Generate_ptr
+#define LLMEngine_Executor_LLM_GenerateAsync LLMEngine_Executor_LLM_GenerateAsync_ptr
+#define LLMEngine_Prompt_SetText LLMEngine_Prompt_SetText_ptr
+#define LLMEngine_Prompt_SetTokenIds LLMEngine_Prompt_SetTokenIds_ptr
+#define LLMEngine_Executor_Deinit LLMEngine_Executor_Deinit_ptr
+#define LLMEngine_Executor_Destroy LLMEngine_Executor_Destroy_ptr
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // HIAI_LLM_ENGINE_LOADER_H

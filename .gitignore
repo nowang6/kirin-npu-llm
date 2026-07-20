@@ -1,0 +1,7 @@
+# 模型转换输出（大文件，不入库）
+model-converter/omc_out/
+
+# Python
+__pycache__/
+.venv/
+*.pyc

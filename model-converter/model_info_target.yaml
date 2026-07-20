@@ -1,0 +1,45 @@
+# 导出工程配置yaml
+embedding_config:
+  embedding_separate: True
+  embedding_as_fp16: False
+  mul_twice: False
+
+no_gemm: True
+mock_as_s16: False
+output_pos:
+
+model_arch: qwen2
+
+# 原始模型路径
+hf_model_path: ./Qwen2.5-1.5B-Instruct
+
+# 量化配置文件路径
+config_file: dopt_conf.json
+
+# 量化文件fake_quant_weight.pth所在的路径
+quant_pth: dopt_out/fake_quant_weight.pth
+
+run_mode: hardware
+
+# 根据实际环境修改路径
+dump_path: dump
+output_dir: onnx
+
+lora:
+  enable: False
+  megatron: False
+  lora_scale: 4
+
+  lora_config:
+  lora_ckpt:
+
+hf_model_device: "cpu"
+hf_model_device: "torch.float32"
+onnx_output_model_name: "model"
+onnx_opset: 12
+batch: 1
+kv_cache_max_len: 2048
+
+layers: 28
+seq_len:
+  - 64

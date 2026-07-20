@@ -1,0 +1,37 @@
+kd: 
+  enable: False
+  loss: mse
+  micro_batch_size: 2
+  gradient_accumulation_steps: 4
+  weight_decay: 0.0
+  warmup_steps: 10
+  num_epochs: 1
+  learning_rate: !!float 1e-5
+  eval_step: 10
+  logging_step: 50
+  lr_scheduler_type: cosine
+  trainable_keys:
+    - quant_alpha
+    - norm
+  no_split_module_classes:
+    - Qwen3DecoderLayer
+    - Qwen2DecoderLayer
+    - GlmDecoderLayer
+    - LlamaDecoderLayer
+    - HunYuanDecoderLayer
+
+dataset:
+  train_files: c4_demo.json
+  train_samples: 128
+  ptq_samples: 128
+
+extra_training_config:
+  fp16: True
+
+cutoff_len: 128
+num_samples: 256
+# True: Kirin 9020
+# False: Kirin X90
+quant_param_2: False
+embedding_separate: True
+lm_head_size: 2048
