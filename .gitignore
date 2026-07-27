@@ -5,3 +5,4 @@ model-converter/omc_out/
 __pycache__/
 .venv/
 *.pyc
+.vscode

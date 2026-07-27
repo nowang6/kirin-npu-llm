@@ -2,12 +2,6 @@
 
 在 HarmonyOS / OpenHarmony 设备上，通过命令行运行 Qwen2.5 等大模型推理与工具调用准确率评测。基于 **HiAI LLM Engine**（Kirin NPU）。
 
-| 可执行文件 | 用途 |
-|------------|------|
-| `llm_bin` | 交互对话、批处理推理与 benchmark |
-| `llm_eval` | 工具调用（tool calling）准确率评测 |
-
-## 功能特性
 
 **llm_bin**
 
@@ -16,12 +10,6 @@
 - 支持 `/exit`、`/reset` 命令
 - 可通过命令行参数覆盖最大生成长度 `max_gen_tokens`
 
-**llm_eval**
-
-- 读取 JSONL 评测集，按 Qwen ChatML 模板构造带工具定义的 system prompt
-- 解析模型输出中的 `<tool_call>...</tool_call>`，与标注答案比对
-- 输出「工具正确」（名称 + 数量）与「全部正确」（名称 + 参数 + 数量）及汇总统计
-- 评测逻辑与 `llm_eval.py` 对齐，可在设备端直接跑 NPU 推理评测
 
 **通用**
 
