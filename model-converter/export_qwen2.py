@@ -104,9 +104,19 @@ def export_model(
     os.mkdir(output_dir_tmp)
     onnx_file_name_tmp = os.path.join(output_dir_tmp, f"{onnx_output_model_name}.onnx")
 
-    if export_config.get("layers", -1) > 0:
-        model_wrapper.model.config.num_hidden_layers = export_config["layers"]
-        model_wrapper.model.model.layers = model_wrapper.model.model.layers[:export_config["layers"]]
+    requested_layers = export_config.get("layers", -1)
+    loaded_layers = len(model_wrapper.model.model.layers)
+    if requested_layers > 0:
+        if requested_layers > loaded_layers:
+            raise ValueError(
+                f"Requested {requested_layers} layers, but the model loaded only "
+                f"{loaded_layers}. Keep model_info_target.yaml 'layers' no greater "
+                "than config.json 'num_hidden_layers'."
+            )
+        model_wrapper.model.model.layers = model_wrapper.model.model.layers[:requested_layers]
+
+    # Output names and KV-cache inputs must follow the actual module count.
+    model_wrapper.model.config.num_hidden_layers = len(model_wrapper.model.model.layers)
     config = model_wrapper.model.config
     print(f"Config:{config}")
 

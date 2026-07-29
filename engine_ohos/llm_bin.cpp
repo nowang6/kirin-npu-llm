@@ -356,6 +356,14 @@ static void PrintPerRunStats(const LLMEngine_Context* ctx)
               << ", output tokens: " << stats.outputTokens
               << ", prefill: " << stats.prefillMs << " ms"
               << ", decode: " << stats.decodeMs << " ms";
+    if (stats.prefillMs > 0) {
+        std::cerr << ", prefill speed: "
+                  << (stats.inputTokens * 1000.0 / stats.prefillMs) << " tok/s";
+    }
+    if (stats.decodeMs > 0) {
+        std::cerr << ", decode speed: "
+                  << (stats.outputTokens * 1000.0 / stats.decodeMs) << " tok/s";
+    }
     if (stats.outputTokens > 0) {
         std::cerr << ", decode/token: " << (stats.decodeMs / stats.outputTokens) << " ms";
     }
